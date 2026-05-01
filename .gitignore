@@ -2,4 +2,6 @@
 *.lock
 *.xml
 .idea
+build/
+dist/
 __pycache__/
