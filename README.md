@@ -57,12 +57,32 @@ cd NVOC-CLI-Stressor
 uv sync
 ```
 
-或者如果您习惯使用 pip 手动安装：
+如果你只想使用纯 `venv` + `pip`，可以直接安装仓库根目录提供的依赖文件：
 
 ```bash
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu129
-pip install numpy
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
 ```
+
+其中 `requirements.txt` 是面向纯 `venv` 用户的兜底方案；如果你使用 `uv`，仍然建议以 `uv sync` 为准。
+
+如果你更习惯手动安装，也可以执行：
+
+```bash
+pip install --extra-index-url https://download.pytorch.org/whl/cu129 numpy==2.4.4 torch==2.9.0
+```
+
+### OpenCL 分支打包说明
+
+如果你切换到 `opencl` 分支并且需要生成独立可执行文件，先安装打包依赖：
+
+```bash
+pip install -r requirements-opencl.txt
+pyinstaller NVOC-CLI-Stressor-opencl.spec
+```
+
+默认生成物会输出到 `dist/NVOC-CLI-Stressor-opencl/`。当前的 spec 文件以仓库入口脚本为模板；如果你的 OpenCL 分支使用独立入口，请把 spec 里的 `entry_script` 改成对应文件。
 
 ### 使用方法
 
@@ -140,12 +160,32 @@ cd NVOC-CLI-Stressor
 uv sync
 ```
 
+If you prefer a pure `venv` + `pip` workflow, install the root-level dependency file directly:
+
+```bash
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+The `requirements.txt` file is the fallback path for pure-venv users; if you use `uv`, `uv sync` remains the recommended source of truth.
+
 Or, if you prefer manual pip installation:
 
 ```bash
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu129
-pip install numpy
+pip install --extra-index-url https://download.pytorch.org/whl/cu129 numpy==2.4.4 torch==2.9.0
 ```
+
+### OpenCL branch packaging
+
+If you switch to the `opencl` branch and want a standalone executable, install the build helper dependencies first:
+
+```bash
+pip install -r requirements-opencl.txt
+pyinstaller NVOC-CLI-Stressor-opencl.spec
+```
+
+By default the generated artifact is written to `dist/NVOC-CLI-Stressor-opencl/`. The current spec uses the repository entry script as a template; if your OpenCL branch has a separate bootstrap module, update `entry_script` in the spec accordingly.
 
 ### Usage
 

@@ -2,3 +2,5 @@
 *.lock
 *.xml
 .idea
+build/
+dist/
